@@ -1,22 +1,23 @@
 package dictionaryProject;
 
+import java.io.File;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
         MyTranslateDictionaryCore myDictionary = new MyTranslateDictionaryCore();
-        myDictionary.setFilePath(); // Установка пути к файлу
-        myDictionary.openAndReadOrCreateFile(); // Открытие или создание файла
+        File file = myDictionary.setFilePath(); // Установка пути к файлу
+        myDictionary.openAndReadOrCreateFile(file); // Открытие или создание файла
 
-        MyDictionary4lettersLanguage m4lDict = new MyDictionary4lettersLanguage();
-        MyDictionary5numLanguage m5nDict = new MyDictionary5numLanguage();
+        MyDictionary4lettersLanguage m4lDict = new MyDictionary4lettersLanguage(file);
+        MyDictionary5numLanguage m5nDict = new MyDictionary5numLanguage(file);
         MyTranslateDictionaryCore supportDict = m5nDict;
         MyTranslateDictionaryCore usingDict = m4lDict;
         String actionNum = "";
         Scanner in = new Scanner(System.in);
         while (true){
-            //System.out.println("\033[H\033[J");
+            System.out.println();
             System.out.println("Команды для работы со словарём:");
             System.out.println("1. Сменить словарь. Сейчас используется - "+usingDict.getName());
             System.out.println("2. Добавить запись в словарь");
@@ -72,7 +73,6 @@ public class Main {
                     break;
                 }
                 case ("6"):{
-                    //MyTranslateDictionaryCore.clearFile();
                     usingDict.saveIntoFile();
                     supportDict.saveIntoFile();
                     break;

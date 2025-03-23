@@ -12,16 +12,18 @@ public class MyTranslateDictionaryCore implements IDictionary {
     static boolean appendSavingFile = false; // Флаг для указания, нужно ли добавлять данные в конец файла
 
     // Метод для установки пути к файлу
-    public void setFilePath() {
+    public File setFilePath() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите путь к файлу словаря: ");
         String filePath = scanner.nextLine();
         file = new File(filePath);
+        return file;
     }
 
-    protected void openAndReadOrCreateFile(){
+    protected void openAndReadOrCreateFile(File file){
         // Создание или открытие файла
         try {
+            this.file = file;
             if (file.createNewFile()) // Если файл не существует, создаем его
                 System.out.println("Файл словаря создан");
             else{ // Если файл уже существует
