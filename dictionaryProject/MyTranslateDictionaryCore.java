@@ -55,7 +55,6 @@ public class MyTranslateDictionaryCore implements IDictionary {
                     keyFounded = false;
                     line = reader.readLine();
                 }
-                System.out.println("Файл открыт и загружен");
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -72,7 +71,9 @@ public class MyTranslateDictionaryCore implements IDictionary {
     // Метод для добавления нового слова и его перевода
     public void addWordAndTranslation(String wordKey, String translationWord) {
         if (wordKey.matches(patternForKey)){
-            dictKeyWord.put(wordKey, translationWord);
+            if (!dictKeyWord.containsKey(wordKey)) {
+                dictKeyWord.put(wordKey, translationWord);
+            }
         }
     }
 
@@ -87,9 +88,10 @@ public class MyTranslateDictionaryCore implements IDictionary {
     }
 
     // Метод для сохранения словаря в файл
-    public void saveIntoFile() {
-        try(FileWriter writer = new FileWriter(file, appendSavingFile))
+    public void saveIntoFile(boolean f1) {
+        try
         {
+            FileWriter writer = new FileWriter(file, f1);
             // Перебор всех записей в словаре
             for (HashMap.Entry entry: dictKeyWord.entrySet()) {
                 String keyForSave = entry.getKey().toString(); // Получение ключа для сохранения
@@ -97,7 +99,8 @@ public class MyTranslateDictionaryCore implements IDictionary {
                 String strForSave = keyForSave +'\t'+translationForSave+"\r\n"; // Формирование строки для записи
                 writer.write(strForSave); // Запись строки в файл
             }
-            appendSavingFile=!appendSavingFile;
+            writer.close();
+            //appendSavingFile=!appendSavingFile;
         }
         catch(IOException ex){
             System.out.println(ex.getMessage());
